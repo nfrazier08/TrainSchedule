@@ -47,26 +47,27 @@ $(document).ready(function(){
 	}); //This is the end of the click function
 
 	// Retrieve trains from the train database
-	// database.ref().orderByChild("dateAdded").limitToLast(1).on("child_added", function(snapshot) {
-	database.ref().on("child_added", function(snapshot, prevChildKey) {
-
-		// var trainName = trainObject.name;
-		// var trainDestination = trainObject.destination;
-		// var firstTrainTime = trainObject.firstTrain;
-		// var trainFrequency = trainObject.frequency;
-
+	database.ref().orderByChild("dateAdded").limitToLast(1).on("child_added", function(snapshot) {
+	// database.ref().on("child_added", function(snapshot, prevChildKey) {
 		
-		// console.log("this is train object " + trainObject)
+		//Store snapshot.val() into a variable
+		var sv = snapshot.val();
 
-	//Store snapshot.val() into a variable
-			var sv = snapshot.val();
-			console.log("snapshot" + sv);
+		//Pull trainObject back from Firebase to append it to the form on top
+		trainObject = sv.trainObject;
+		
+		var trainName = trainObject.name;
+		var trainDestination = trainObject.destination;
+		var firstTrainTime = trainObject.firstTrain;
+		var trainFrequency = trainObject.frequency;
+	
+	
 		//Append in rows to the html page
 			var row = $("<tr>");
-			row.append("<td>" + snapshot.val().trainName);
-			row.append("<td>" + snapshot.val().destination);
-			row.append("<td>" + snapshot.val().frequency);
-			// row.append("<td>" + sv.trainName);
+			row.append("<td>" + trainName);
+			row.append("<td>" + trainDestination);
+			row.append("<td>" + firstTrainTime);
+			row.append("<td>" + trainFrequency);
 			$("#currentTrainSchedule tbody").append(row);
 		
 	}), function(errorObject) {
