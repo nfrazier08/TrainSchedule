@@ -24,14 +24,14 @@ $(document).ready(function(){
 		var	trainDestination = $("#destinationInput").val().trim();
 		var firstTrainTime = $("#firstTrainInput").val().trim();
 		var	trainFrequency = $("#frequencyInput").val().trim();
-
+	
 	//Clear form for next train entry
 		$("#trainNameInput").val("");
 		$("#destinationInput").val("");
 		$("#firstTrainInput").val("");
 		$("#frequencyInput").val("");
 
-	//Create a train object
+	// //Create a train object
 		var trainObject = {
 			name: trainName,
 			destination: trainDestination,
@@ -39,37 +39,35 @@ $(document).ready(function(){
 			frequency: trainFrequency
 		}
 		
-		//Push to firebase
+	//Push to firebase
 		database.ref().push({
 			trainObject,
 			dateAdded: firebase.database.ServerValue.TIMESTAMP
 		});
-
-		// console.log(trainName);
-		// console.log("User first train time " + firstTrainTime);
-		// console.log(frequency);
-
 	}); //This is the end of the click function
 
 	// Retrieve trains from the train database
-	//TODO: Learn why this code works? Pulled from EDM assignment
-	database.ref().orderByChild("dateAdded").limitToLast(1).on("child_added", function(snapshot) {
-		// database.ref().on("child_added", function(snapshot, prevChildKey) {
+	// database.ref().orderByChild("dateAdded").limitToLast(1).on("child_added", function(snapshot) {
+	database.ref().on("child_added", function(snapshot, prevChildKey) {
+
+		// var trainName = trainObject.name;
+		// var trainDestination = trainObject.destination;
+		// var firstTrainTime = trainObject.firstTrain;
+		// var trainFrequency = trainObject.frequency;
+
+		
+		// console.log("this is train object " + trainObject)
+
 	//Store snapshot.val() into a variable
 			var sv = snapshot.val();
+			console.log("snapshot" + sv);
 		//Append in rows to the html page
 			var row = $("<tr>");
 			row.append("<td>" + snapshot.val().trainName);
 			row.append("<td>" + snapshot.val().destination);
 			row.append("<td>" + snapshot.val().frequency);
+			// row.append("<td>" + sv.trainName);
 			$("#currentTrainSchedule tbody").append(row);
-
-		//Add frequency (min) to the first train time using moment.js
-		// var theFutureTime = moment().hour('12').minute('44').add(4,'hours').format("HH:mm");
-		// var nextArrival = moment.duration(frequency + firstTrainTime);
-		// console.log(nextArrival + " nA");
-
-	
 		
 	}), function(errorObject) {
       console.log("Errors handled: " + errorObject.code);
