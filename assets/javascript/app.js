@@ -41,23 +41,21 @@ $(document).ready(function(){
 		
 		//Push to firebase
 		database.ref().push({
-			"trainName" : trainName,
-			"trainDestination" : destination,
-			"trainFrequency" : frequency,
+			trainObject,
 			dateAdded: firebase.database.ServerValue.TIMESTAMP
-			});
+		});
 
-		console.log(trainName);
-		console.log("User first train time " + firstTrainTime);
-		console.log(frequency);
+		// console.log(trainName);
+		// console.log("User first train time " + firstTrainTime);
+		// console.log(frequency);
 
-	
-	});
+	}); //This is the end of the click function
 
 	// Retrieve trains from the train database
 	//TODO: Learn why this code works? Pulled from EDM assignment
 	database.ref().orderByChild("dateAdded").limitToLast(1).on("child_added", function(snapshot) {
-		//Store snapshot.val() into a variable
+		// database.ref().on("child_added", function(snapshot, prevChildKey) {
+	//Store snapshot.val() into a variable
 			var sv = snapshot.val();
 		//Append in rows to the html page
 			var row = $("<tr>");
@@ -68,8 +66,8 @@ $(document).ready(function(){
 
 		//Add frequency (min) to the first train time using moment.js
 		// var theFutureTime = moment().hour('12').minute('44').add(4,'hours').format("HH:mm");
-		var nextArrival = moment.duration(frequency + firstTrainTime);
-		console.log(nextArrival + " nA");
+		// var nextArrival = moment.duration(frequency + firstTrainTime);
+		// console.log(nextArrival + " nA");
 
 	
 		
@@ -82,4 +80,4 @@ $(document).ready(function(){
 
 
 // 
-// })
+})
