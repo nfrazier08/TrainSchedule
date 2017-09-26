@@ -1,4 +1,4 @@
-// $(document).ready(function(){
+$(document).ready(function(){
 
 // Steps to complete:
 	// Get Firebase Started:
@@ -15,44 +15,43 @@
 
 	var database = firebase.database();
 
+	//Button click
+	$("#addTrainBtn").on("click", function(event){
+		event.preventDefault();
 
+	//then update the html + update the Firebase database
+		var	trainName = $("#trainNameInput").val().trim();
+		var	trainDestination = $("#destinationInput").val().trim();
+		var firstTrainTime = $("#firstTrainInput").val().trim();
+		var	trainFrequency = $("#frequencyInput").val().trim();
 
-	// Make button for adding new trains
-		// Initial Values
-		    var trainName = "";
-		    var destination = "";
-		    var nextArrival = "";
-		    var frequency = "";
+	//Clear form for next train entry
+		$("#trainNameInput").val("");
+		$("#destinationInput").val("");
+		$("#firstTrainInput").val("");
+		$("#frequencyInput").val("");
 
-		//TODO: Find a way to empty the previous entries on the DOM
-
-		//Button click
-		$("#add-train-btn").on("click", function(event){
-			event.preventDefault();
-
-		//then update the html + update the Firebase database
-		trainName = $("#train-name-input").val().trim();
-		destination = $("#destination-input").val().trim();
-		// nextArrival = moment($("#next-arrival-input").val().trim(), 'HH:mm a').format("LT");
-		frequency = moment($("#frequency-input").val().trim(),"mm").format("LT");
-			
+	//Create a train object
+		var trainObject = {
+			name: trainName,
+			destination: trainDestination,
+			firstTrain: firstTrainTime,
+			frequency: trainFrequency
+		}
+		
 		//Push to firebase
 		database.ref().push({
 			"trainName" : trainName,
-			"destination" : destination,
-			"nextArrival" : nextArrival,
-			"frequency" : frequency,
+			"trainDestination" : destination,
+			"trainFrequency" : frequency,
 			dateAdded: firebase.database.ServerValue.TIMESTAMP
 			});
 
 		console.log(trainName);
+		console.log("User first train time " + firstTrainTime);
+		console.log(frequency);
 
-		//Clear form for next train entry
-		  // Clears all of the text-boxes
-		  $("#train-name-input").val("");
-		  $("#destination-input").val("");
-		  $("#next-arrival-input").val("");
-		  $("#frequency-input").val("");
+	
 	});
 
 	// Retrieve trains from the train database
@@ -67,20 +66,17 @@
 			row.append("<td>" + snapshot.val().frequency);
 			$("#currentTrainSchedule tbody").append(row);
 
-		//Change user time inputs so all time displays in minutes
-		// var trainTimeFormat = moment.unix().format("HH:mm a");
-		// var frequencyFormat = moment.unix().format("mm");
-
-		//Calculate in minutes when the next train will arrive
-			//From the time and frequency the user inputs
-		// var minutesTilNextTrain = moment(trainTimeFormat).add
+		//Add frequency (min) to the first train time using moment.js
+		// var theFutureTime = moment().hour('12').minute('44').add(4,'hours').format("HH:mm");
+		var nextArrival = moment.duration(frequency + firstTrainTime);
+		console.log(nextArrival + " nA");
 
 	
 		
-	}, function(errorObject) {
+	}), function(errorObject) {
       console.log("Errors handled: " + errorObject.code);
 
-  });
+  };
 	// Calculate when the next train will arrive; this should be relative to the current time.
 		// Using moment.js formatting to set difference in months.
 
