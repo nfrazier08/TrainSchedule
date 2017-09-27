@@ -72,11 +72,12 @@ $(document).ready(function(){
 		
 	}), function(errorObject) {
       console.log("Errors handled: " + errorObject.code);
-
-  };
+};
 	// Calculate when the next train will arrive; this should be relative to the current time.
-		// Using moment.js formatting to set difference in months.
+		// Using moment.js formatting to set difference in minutes
+		var differenceTimes = moment().diff(moment.unix(firstTrainTime), "minutes");
+		var 
 
 
-// 
+
 })
